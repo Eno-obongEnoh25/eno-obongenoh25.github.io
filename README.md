@@ -26,7 +26,7 @@ Laravel is accessible, powerful, and provides tools required for large, robust a
 GitHub Pages cannot run Laravel/PHP. A static portfolio homepage is included at:
 
 - `public/index.html`
-- `public/assets/certificates/*` (static certificate images)
+- `public/assets/certificates/*` (static certificate PDFs/images)
 
 To host on GitHub Pages, set Pages to deploy from your default branch and the `/public` folder.
 Then edit links/content directly in `public/index.html`.
