@@ -61,7 +61,7 @@
               <a
                 href="#contact"
                 class="rounded-md bg-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/15"
-                >Send a Message</a
+                >Email me</a
               >
             </div>
           </div>
@@ -203,50 +203,32 @@ systems from Identity providers such as Blusalt..</div>
 
       <section id="contact" class="mx-auto max-w-6xl px-4 py-10">
         <h2 class="text-2xl font-semibold tracking-tight">Contact</h2>
-        <!-- <p class="mt-2 text-zinc-300">
-          Static site note: this form uses <code class="text-zinc-200">mailto:</code>. Replace with Formspree/Getform if you want inbox delivery.
-        </p> -->
+        <div class="mt-6 max-w-2xl rounded-2xl border border-white/10 bg-white/5 p-6">
+          <p class="text-zinc-300">Email me at:</p>
 
-        <form
-          id="contactForm"
-          class="mt-6 max-w-2xl rounded-2xl border border-white/10 bg-white/5 p-6"
-        >
-          <div class="grid gap-4">
-            <div>
-              <label class="text-sm text-zinc-300" for="email">Email</label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                class="mt-2 w-full rounded-lg border border-white/10 bg-zinc-950/40 px-3 py-2 text-white placeholder:text-zinc-500 focus:border-white/20 focus:outline-none"
-                placeholder="you@example.com"
-                required
-              />
-            </div>
+          <div class="mt-4 flex flex-wrap items-center gap-3">
+            <a
+              id="emailLink"
+              href="mailto:enoobongenoh25@gmail.com"
+              class="rounded-md bg-zinc-950/40 px-3 py-2 font-medium text-white underline-offset-4 hover:underline"
+              >enoobongenoh25@gmail.com</a
+            >
 
-            <div>
-              <label class="text-sm text-zinc-300" for="message">Message</label>
-              <textarea
-                id="message"
-                name="message"
-                rows="5"
-                class="mt-2 w-full rounded-lg border border-white/10 bg-zinc-950/40 px-3 py-2 text-white placeholder:text-zinc-500 focus:border-white/20 focus:outline-none"
-                placeholder="How can I help?"
-                required
-              ></textarea>
-            </div>
+            <button
+              id="copyEmail"
+              type="button"
+              class="rounded-md bg-white px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-zinc-200"
+            >
+              Copy
+            </button>
 
-            <div class="flex items-center justify-between gap-3">
-              <div class="text-xs text-zinc-400">Opens your email client.</div>
-              <button
-                type="submit"
-                class="rounded-md bg-white px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-zinc-200"
-              >
-                Send
-              </button>
-            </div>
+            <span id="copyStatus" class="text-xs text-zinc-400" aria-live="polite"></span>
           </div>
-        </form>
+
+          <p class="mt-4 text-sm text-zinc-400">
+            This site is hosted on GitHub Pages, so email opens in your email client.
+          </p>
+        </div>
       </section>
 
       <footer class="mt-16 border-t border-white/10">
@@ -295,18 +277,44 @@ systems from Identity providers such as Blusalt..</div>
     <script>
       document.getElementById("year").textContent = String(new Date().getFullYear());
 
-      // Mailto form
-      document.getElementById("contactForm").addEventListener("submit", (e) => {
-        e.preventDefault();
-        const email = document.getElementById("email").value.trim();
-        const message = document.getElementById("message").value.trim();
+      // Contact actions
+      const emailAddress = "enoobongenoh25@gmail.com";
+      const emailLink = document.getElementById("emailLink");
+      const copyBtn = document.getElementById("copyEmail");
+      const copyStatus = document.getElementById("copyStatus");
 
-        // TODO: Replace with your own email address
-        const to = "enoobongenoh25@gmail.com";
-        const subject = encodeURIComponent("Portfolio contact");
-        const body = encodeURIComponent(`From: ${email}\n\n${message}`);
-        window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
-      });
+      if (emailLink) {
+        emailLink.href = `mailto:${emailAddress}`;
+        emailLink.textContent = emailAddress;
+      }
+
+      async function copyToClipboard(text) {
+        try {
+          await navigator.clipboard.writeText(text);
+          return true;
+        } catch {
+          const temp = document.createElement("input");
+          temp.value = text;
+          temp.setAttribute("readonly", "true");
+          temp.style.position = "absolute";
+          temp.style.left = "-9999px";
+          document.body.appendChild(temp);
+          temp.select();
+          const ok = document.execCommand("copy");
+          document.body.removeChild(temp);
+          return ok;
+        }
+      }
+
+      if (copyBtn) {
+        copyBtn.addEventListener("click", async () => {
+          const ok = await copyToClipboard(emailAddress);
+          if (copyStatus) copyStatus.textContent = ok ? "Copied." : "Couldn’t copy — please copy manually.";
+          setTimeout(() => {
+            if (copyStatus) copyStatus.textContent = "";
+          }, 2000);
+        });
+      }
 
       // Certificate modal
       const modal = document.getElementById("certModal");
@@ -343,4 +351,3 @@ systems from Identity providers such as Blusalt..</div>
     </script>
   </body>
 </html>
-
