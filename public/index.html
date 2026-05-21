@@ -209,9 +209,9 @@ systems from Identity providers such as Blusalt..</div>
           <div class="mt-4 flex flex-wrap items-center gap-3">
             <a
               id="emailLink"
-              href="mailto:enoobongenoh25@gmail.com"
+              href="#"
               class="rounded-md bg-zinc-950/40 px-3 py-2 font-medium text-white underline-offset-4 hover:underline"
-              >enoobongenoh25@gmail.com</a
+              >Email (tap to open)</a
             >
 
             <button
@@ -278,14 +278,29 @@ systems from Identity providers such as Blusalt..</div>
       document.getElementById("year").textContent = String(new Date().getFullYear());
 
       // Contact actions
-      const emailAddress = "enoobongenoh25@gmail.com";
       const emailLink = document.getElementById("emailLink");
       const copyBtn = document.getElementById("copyEmail");
       const copyStatus = document.getElementById("copyStatus");
 
+      function reverseString(value) {
+        return String(value).split("").reverse().join("");
+      }
+
+      function getEmailAddress() {
+        // Obfuscated to reduce basic scraping
+        const user = reverseString("52honegnoobone");
+        const domain = reverseString("liamg");
+        const tld = reverseString("moc");
+        return `${user}@${domain}.${tld}`;
+      }
+
       if (emailLink) {
+        const emailAddress = getEmailAddress();
         emailLink.href = `mailto:${emailAddress}`;
-        emailLink.textContent = emailAddress;
+        emailLink.addEventListener("click", (e) => {
+          // Ensure the link still behaves properly even if JS runs late
+          emailLink.href = `mailto:${getEmailAddress()}`;
+        });
       }
 
       async function copyToClipboard(text) {
@@ -308,7 +323,7 @@ systems from Identity providers such as Blusalt..</div>
 
       if (copyBtn) {
         copyBtn.addEventListener("click", async () => {
-          const ok = await copyToClipboard(emailAddress);
+          const ok = await copyToClipboard(getEmailAddress());
           if (copyStatus) copyStatus.textContent = ok ? "Copied." : "Couldn’t copy — please copy manually.";
           setTimeout(() => {
             if (copyStatus) copyStatus.textContent = "";
